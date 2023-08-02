@@ -8,6 +8,9 @@ const { Raffle, validateRaffle} = require('../models/raffle');
 router.get('/', async (req, res) => {
 	try {
 		const raffles = await Raffle.find();
+		if (!raffles) {
+			return res.status(404).send({ error: "No raffles found."});
+		}
 		res.send(raffles);
 	}
 	catch (err) {
@@ -18,11 +21,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 	try {
 		if (req.params.id.length != 24) {
-			return res.status(400).send('id must be 24 characters long');
+			return res.status(400).send({ error: "id must be 24 characters long"});
 		}
 		const raffle = await Raffle.findById(req.params.id);
 		if (!raffle) {
-			return res.status(404).send('The raffle with the given ID was not found.');
+			return res.status(404).send({ error: "The raffle with the given ID was not found."});
 		}
 		res.send(raffle);
 	}catch (err) {
@@ -31,12 +34,12 @@ router.get('/:id', async (req, res) => {
 });
 router.post('/', async (req, res) => {
 	try {
-		if (req.body._id) {
-			return res.status(400).send('id must not be included in the request body');
+		if (req.body._id || req.body.__v) {
+			return res.status(400).send({ error: "_id and __v must not be included in the request body" });
 		}
 		const { error } = validateRaffle(req.body);
 		if ( error ) {
-			return res.status(400).send(error.details[0].message);
+			return res.status(400).send({ error: error.details[0].message });
 		}
 		const raffle = new Raffle({
 			raffleGuildId : req.body.raffleGuildId,
@@ -52,7 +55,7 @@ router.post('/', async (req, res) => {
 			winnerCount : req.body.winnerCount,
 		});
 		await raffle.save();
-		res.send(raffle);
+		res.status(201).send(raffle);
 	}
 	catch (err) {
 		console.log(err);
@@ -61,15 +64,15 @@ router.post('/', async (req, res) => {
 router.put('/:id', async(req, res) => {
 	try {
 		if (req.params.id.length != 24) {
-			return res.status(400).send('id must be 24 characters long');
+			return res.status(400).send({ error: "id must be 24 characters long" });
 		}
 		const { error } = validateRaffle(req.body);
 		if ( error ) {
-			return res.status(400).send(error.details[0].message);
+			return res.status(400).send({ error: error.details[0].message });
 		}
 		const raffle = await Raffle.findById(req.params.id);
 		if (!raffle) {
-			return res.status(404).send('The raffle with the given ID was not found.');
+			return res.status(404).send({ error: "The raffle with the given ID was not found." });
 		}
 		raffle.raffleGuildId = req.body.raffleGuildId;
 		raffle.raffleChannelId = req.body.raffleChannelId;
@@ -91,14 +94,14 @@ router.put('/:id', async(req, res) => {
 router.delete('/:id', async (req, res) => {
 	try {
 		if (req.params.id.length != 24) {
-			return res.status(400).send('id must be 24 characters long');
+			return res.status(400).send({ error: "id must be 24 characters long" });
 		}
 		const raffle = await Raffle.findById(req.params.id);
 		if (!raffle) {
-			return res.status(404).send('The raffle with the given ID was not found.')
+			return res.status(404).send({ error: "The raffle with the given ID was not found." })
 		}
 		await Raffle.deleteOne(raffle);
-		res.send(raffle);
+		res.status(200).send(raffle);
 	}
 	catch (err) {
 		console.log(err);

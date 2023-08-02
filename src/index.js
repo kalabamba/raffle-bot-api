@@ -1,19 +1,25 @@
+// dependencies
 require('dotenv').config();
 const express = require('express');
+const morgan = require('morgan')
 const app = express();
 const mongoose = require('mongoose');
-
+const cors = require("cors");
+const swaggerUI = require("swagger-ui-express");
+//routes 
 const raffles = require('./routes/raffles');
 const home = require('./routes/home');
+//import swagger docs
+const docs = require('./docs');
+//app configs
 app.use(express.json());
-
-app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	next();
-});
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+app.use(cors());
 app.use('/', home);
 app.use('/api/raffles', raffles);
+app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(docs));
 
+// connect to mongodb
 (async () => {
 	
 	try {
@@ -24,6 +30,8 @@ app.use('/api/raffles', raffles);
 		console.log(err);
 	}	
 })();
+
+// start server
 app.listen(process.env.PORT, () => {
-	console.log(`Server listening on port 3000`);
+	console.log(`Server listening on port ${process.env.PORT}`);
 });
