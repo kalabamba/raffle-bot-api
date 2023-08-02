@@ -1,7 +1,8 @@
 const getRaffles = require('./get-raffles');
 const getRaffle = require('./get-raffle');
 const createRaffle = require('./create-raffle');
-
+const updateRaffle = require('./update-raffle');
+const deleteRaffle = require('./delete-raffle');
 
 module.exports = {
     paths:{
@@ -10,7 +11,9 @@ module.exports = {
             ...createRaffle
         },
         '/api/raffles/{id}':{
-            ...getRaffle
+            ...getRaffle,
+            ...updateRaffle,
+            ...deleteRaffle
         }
     }
 }

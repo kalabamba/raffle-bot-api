@@ -28,7 +28,7 @@ module.exports = {
                     'application/json':{
                         schema:{
                             example:{
-                                message:"We can't find the raffle"
+                                error:"The raffle with the given ID was not found."
                             }
                         }
                     }
