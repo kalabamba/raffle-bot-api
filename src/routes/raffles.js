@@ -80,7 +80,7 @@ router.put('/:id', async(req, res) => {
 		raffle.raffleDetails = req.body.raffleDetails ? req.body.raffleDetails : raffle.raffleDetails;
 		raffle.createdDate = req.body.createdDate ? req.body.createdDate : raffle.createdDate;
 		raffle.endDate = req.body.endDate ? req.body.endDate : raffle.endDate;
-		raffle.isActive = req.body.isActive ? req.body.isActive : raffle.isActive;
+		raffle.isActive = req.body.isActive !== undefined ? req.body.isActive : raffle.isActive;
 		raffle.winnerCount = req.body.winnerCount ? req.body.winnerCount : raffle.winnerCount;
 		raffle.winners = req.body.winners ? req.body.winners : raffle.winners;
 		raffle.backups = req.body.backups ? req.body.backups : raffle.backups;
