@@ -20,11 +20,10 @@ const raffleSchema = new mongoose.Schema({
 });
 // Model for Raffle
 const Raffle = mongoose.model('Raffle', raffleSchema);
-// Validation for Raffle
-const validateRaffle = (raffle) => {
+
+// Validation for Raffles
+const validateRaffleCreate = (raffle) => {
 	const schema = Joi.object({
-		_id: Joi.string().min(24).max(24),
-		__v: Joi.number(),
 		raffleGuildId: Joi.string().required().min(1),
 		raffleChannelId: Joi.string().required().min(1),
 		raffleMsgId: Joi.string().required().min(1),
@@ -35,8 +34,27 @@ const validateRaffle = (raffle) => {
 		}).required(),
 		createdDate: Joi.date().required(),
 		endDate: Joi.date().required(),
-		isActive: Joi.boolean(),
 		winnerCount: Joi.number().required(),
+	});
+	const result = schema.validate(raffle);
+	return result;
+};
+const validateRaffleUpdate = (raffle) => {
+	const schema = Joi.object({
+		_id: Joi.string().min(24).max(24),
+		__v: Joi.number(),
+		raffleGuildId: Joi.string().min(1),
+		raffleChannelId: Joi.string().min(1),
+		raffleMsgId: Joi.string().min(1),
+		raffleDetails: Joi.object({
+			description: Joi.string().min(1),
+			prize: Joi.string().min(1),
+			creatorId: Joi.string().min(1)
+		}),
+		createdDate: Joi.date(),
+		endDate: Joi.date(),
+		isActive: Joi.boolean(),
+		winnerCount: Joi.number(),
 		winners: Joi.array(),
 		backups: Joi.array()
 	});
@@ -45,4 +63,4 @@ const validateRaffle = (raffle) => {
 };
 
 
-module.exports =  {Raffle, validateRaffle}
+module.exports =  {Raffle, validateRaffleCreate, validateRaffleUpdate}
