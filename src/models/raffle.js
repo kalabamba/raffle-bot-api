@@ -62,5 +62,14 @@ const validateRaffleUpdate = (raffle) => {
 	return result;
 };
 
+// validate query
+const validateQuery = (query) => {
+	const schema = Joi.object({
+		isActive: Joi.boolean(),
+		raffleMsgId: Joi.string().min(1),
+	});
+	const result = schema.validate(query);
+	return result;
+};
 
-module.exports =  {Raffle, validateRaffleCreate, validateRaffleUpdate}
+module.exports =  {Raffle, validateRaffleCreate, validateRaffleUpdate, validateQuery}

@@ -1,17 +1,32 @@
 const express = require('express');
 const router = express.Router();
-
-const { Raffle, validateRaffleCreate, validateRaffleUpdate} = require('../models/raffle');
-
-
+const { Raffle, validateRaffleCreate, validateRaffleUpdate, validateQuery} = require('../models/raffle');
 
 router.get('/', async (req, res) => {
 	try {
+		if (Object.keys(req.query).length > 0) {
+			const query = { ...req.query };
+			if (req.query.hasOwnProperty("isActive")) {
+				if (req.query.isActive.toLowerCase() === "true" || req.query.isActive.toLowerCase() === "false"){
+					query.isActive = req.query.isActive.toLowerCase === "true" ? true : false;
+				}
+			}
+			const { error } = validateQuery(query);
+			if (error) {
+				return res.status(400).send({ error: error.details[0].message });
+			}
+			const raffles = await Raffle.find(req.query);
+			if (!raffles) {
+				return res.status(404).send({ error: "No raffles found."});
+			}
+			res.send(raffles);
+			return;
+		}
 		const raffles = await Raffle.find();
 		if (!raffles) {
 			return res.status(404).send({ error: "No raffles found."});
 		}
-		res.send(raffles);
+		res.send(raffles);	
 	}
 	catch (err) {
 		console.log(err);
@@ -20,6 +35,24 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
 	try {
+		if (Object.keys(req.query).length > 0) {
+			const query = { ...req.query };
+			if (req.query.hasOwnProperty("isActive")) {
+				if (req.query.isActive.toLowerCase() === "true" || req.query.isActive.toLowerCase() === "false"){
+					query.isActive = req.query.isActive.toLowerCase === "true" ? true : false;
+				}
+			}
+			const { error } = validateQuery(query);
+			if (error) {
+				return res.status(400).send({ error: error.details[0].message });
+			}
+			const raffles = await Raffle.find({_id: req.params.id, ...req.query});
+			if (!raffles || raffles.length === 0) {
+				return res.status(404).send({ error: "No raffles found."});
+			}
+			res.send(raffles);
+			return;
+		}
 		if (req.params.id.length != 24) {
 			return res.status(400).send({ error: "id must be 24 characters long"});
 		}
@@ -34,9 +67,6 @@ router.get('/:id', async (req, res) => {
 });
 router.post('/', async (req, res) => {
 	try {
-		if (req.body._id || req.body.__v) {
-			return res.status(400).send({ error: "_id and __v must not be included in the request body" });
-		}
 		const { error } = validateRaffleCreate(req.body);
 		if ( error ) {
 			return res.status(400).send({ error: error.details[0].message });
