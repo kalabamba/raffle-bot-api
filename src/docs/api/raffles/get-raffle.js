@@ -12,6 +12,24 @@ module.exports = {
 				schema:{
 					type:"string"
 				}
+            },
+            {
+                name:"isActive",
+                in:"query",
+                required:false,
+                description: "isActive query",
+				schema:{
+					type:"string"
+				}
+            },
+            {
+                name:"raffleMsgId",
+                in:"query",
+                required:false,
+                description: "raffleMsgId query",
+				schema:{
+					type:"string"
+				}
             }
         ],
         responses:{
