@@ -5,15 +5,13 @@ const updateRaffle = require('./update-raffle');
 const deleteRaffle = require('./delete-raffle');
 
 module.exports = {
-    paths:{
-        '/api/raffles':{
-            ...getRaffles,
-            ...createRaffle
-        },
-        '/api/raffles/{id}':{
-            ...getRaffle,
-            ...updateRaffle,
-            ...deleteRaffle
-        }
+    '/api/raffles':{
+        ...getRaffles,
+        ...createRaffle
+    },
+    '/api/raffles/{id}':{
+        ...getRaffle,
+        ...updateRaffle,
+        ...deleteRaffle
     }
 }

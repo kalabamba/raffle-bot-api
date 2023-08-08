@@ -22,7 +22,7 @@ app.use(cors());
 app.use('/', home);
 app.use('/api/raffles', [auth, isAdmin], raffles);
 app.use('/api/users', users);
-app.use('/api-docs', [auth], swaggerUI.serve,swaggerUI.setup(docs));
+app.use('/api-docs', swaggerUI.serve,swaggerUI.setup(docs));
 
 // connect to mongodb
 (async () => {

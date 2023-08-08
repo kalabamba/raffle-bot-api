@@ -70,6 +70,30 @@ module.exports = {
                     }
                 }
 			},
+			'401':{
+				description: 'Unauthorized',
+                content:{
+                    'application/json':{
+                        schema:{
+                            example:{
+                                "error": "auth error message"
+                            }
+                        }
+                    }
+                }
+			},
+			'403':{
+				description: 'Forbidden',
+                content:{
+                    'application/json':{
+                        schema:{
+                            example:{
+                                "error": "forbidden error message"
+                            }
+                        }
+                    }
+                }
+			},
             '500':{
                 description: 'Server error',
                 content:{
