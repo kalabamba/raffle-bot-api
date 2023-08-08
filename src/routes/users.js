@@ -24,9 +24,9 @@ router.post('/register', async (req, res) => {
 			password: hashedPassword
 		});
 		await user.save();
-		const response = {_id: user._id, email: user.email, createdAt: user.createdAt, updatedAt: user.updatedAt};
 		const token = user.generateAuthToken();
-		res.header("x-auth-token", token).send(response);
+		const response = {_id: user._id, email: user.email, createdAt: user.createdAt, updatedAt: user.updatedAt, token: token};
+		res.header("Authorization", `Bearer ${token}`).send(response);
 	}
 	catch (err) {
 		console.log(err);
@@ -48,8 +48,8 @@ router.post('/login', async (req, res) => {
 			return res.status(400).send({ error: "Email or password is incorrect" });
 		}
 		const token = user.generateAuthToken();
-		const response = {_id: user._id, email: user.email, createdAt: user.createdAt, updatedAt: user.updatedAt};
-		res.header("x-auth-token", token).send(response);
+		const response = {_id: user._id, email: user.email, createdAt: user.createdAt, updatedAt: user.updatedAt, token: token};
+		res.header("Authorization", `Bearer ${token}`).send(response);
 	}
 	catch (err) {
 		console.log(err);
