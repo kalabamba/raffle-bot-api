@@ -76,6 +76,14 @@ module.exports = {
                     }
                 }
             }
-        }
+        },
+        security: [
+            {
+                Bearer: [
+                    "write:raffles",
+                    "read:raffles"
+                ]
+            }
+        ]
     }
 }

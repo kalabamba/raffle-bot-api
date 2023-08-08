@@ -5,5 +5,5 @@ module.exports = {
     paths: {
         ...raffles,
         ...users
-    }
+    },
 }

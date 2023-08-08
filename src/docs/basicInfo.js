@@ -19,5 +19,13 @@ module.exports = {
             "url": "https://testapi.turgutmemis.com"
         }
     ],
-    
+    components: {
+        securitySchemes: {
+            Bearer: {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT'
+            }
+        }
+    }
 }
