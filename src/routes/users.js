@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
 	res.send('Hello World!');
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register',[auth], async (req, res) => {
 	try {
 		const { error } = validateUser(req.body);
 		if (error) {
