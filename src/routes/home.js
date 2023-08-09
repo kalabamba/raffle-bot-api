@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/',[auth], (req, res) => {
-	res.status(200).send({});
+router.get('/', (req, res) => {
+	res.status(403).send({error:'Access denied.'});
 	});
 module.exports = router;
