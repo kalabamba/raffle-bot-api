@@ -19,10 +19,10 @@ const isAdmin = require('./middlewares/isAdmin');
 app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 app.use(cors());
-app.use('/', home);
 app.use('/api/raffles', [auth, isAdmin], raffles);
 app.use('/api/users', users);
-app.use('/api-docs', swaggerUI.serve,swaggerUI.setup(docs));
+app.use('/api-docs', [auth], swaggerUI.serve,swaggerUI.setup(docs));
+app.use('/', home);
 
 // connect to mongodb
 (async () => {
