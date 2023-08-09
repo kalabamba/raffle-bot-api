@@ -3,9 +3,10 @@ const router = express.Router();
 const { User, validateUser } = require('../models/user');
 const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
+const isAdmin = require('../middlewares/isAdmin');
 
 
-router.post('/register',[auth], async (req, res) => {
+router.post('/register',[auth, isAdmin], async (req, res) => {
 	try {
 		const { error } = validateUser(req.body);
 		if (error) {
@@ -55,7 +56,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/', [auth], (req, res) => {
-	res.status(403).send({error:'Access denied.'});
+	res.status(200).send({});
 });
 
 module.exports = router;
