@@ -5,10 +5,6 @@ const bcrypt = require('bcrypt');
 const auth = require('../middlewares/auth');
 
 
-router.get('/', (req, res) => {
-	res.send('Hello World!');
-});
-
 router.post('/register',[auth], async (req, res) => {
 	try {
 		const { error } = validateUser(req.body);
@@ -57,4 +53,9 @@ router.post('/login', async (req, res) => {
 		console.log(err);
 	}
 });
+
+router.get('/', [auth], (req, res) => {
+	res.status(403).send({error:'Access denied.'});
+});
+
 module.exports = router;
