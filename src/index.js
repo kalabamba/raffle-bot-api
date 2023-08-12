@@ -12,7 +12,7 @@ const users = require('./routes/users');
 const home = require('./routes/home');
 //import swagger docs
 const docs = require('./docs');
-//import auth middleware
+//import middlewares
 const auth = require('./middlewares/auth');
 const isAdmin = require('./middlewares/isAdmin');
 //app configs
@@ -21,7 +21,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(cors());
 app.use('/api/raffles', [auth, isAdmin], raffles);
 app.use('/api/users', users);
-app.use('/api-docs', [auth], swaggerUI.serve,swaggerUI.setup(docs));
+app.use('/api-docs', swaggerUI.serve,swaggerUI.setup(docs));
 app.use('/', home);
 
 // connect to mongodb
