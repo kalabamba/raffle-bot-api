@@ -16,7 +16,7 @@ module.exports = {
           "url": "http://localhost:3000"
         },
         {
-            "url": "https://testapi.turgutmemis.com"
+            "url": "https://raffle-bot.turgutmemis.com"
         }
     ],
     components: {
