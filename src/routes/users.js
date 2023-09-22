@@ -6,7 +6,7 @@ const auth = require('../middlewares/auth');
 const isAdmin = require('../middlewares/isAdmin');
 
 
-router.post('/register',[], async (req, res) => {
+router.post('/register',[auth, isAdmin], async (req, res) => {
 	try {
 		const { error } = validateUser(req.body);
 		if (error) {
